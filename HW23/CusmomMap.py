@@ -30,15 +30,3 @@ class MapCustom_one:
         if not callable(func):
             raise TypeError('Object must be a function')
         return func
-
-
-class MapCustom_two(MapCustom_one):
-    """Iteration state via dict iterator """
-
-    def __init__(self, dictionary, func_one, func_two):
-        super().__init__(dictionary, func_one, func_two)
-        self._iterator = iter(self.dictionary.items())
-
-    def __next__(self):
-        key, value = next(self._iterator)
-        return self.func_one(key), self.func_two(value)
