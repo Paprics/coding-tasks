@@ -1,14 +1,14 @@
 import requests
 
-def word_generator(quantity, max_words=10000):
-    words = set()
+def word_generator(quantity):
+    if not isinstance(quantity, int):
+        raise TypeError('quantity must be an integer')
 
-    while len(words) < quantity and len(words) < max_words:
-        response = requests.get('https://random-word-api.herokuapp.com/word')
-        if response.status_code != 200:
-            raise ConnectionError('Request failed')
+    if quantity > 10000:
+        quantity = 10000
 
-        word = response.json()[0]
-        if word not in words:
-            words.add(word)
-            yield word
+    response = requests.get(f'https://random-word-api.herokuapp.com/word?number={quantity}')
+    if response.status_code != 200:
+        raise ConnectionError('Request failed')
+
+    yield from response.json()
